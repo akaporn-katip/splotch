@@ -1,0 +1,574 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Alfa Slab One", Georgia, "Times New Roman", serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #14110d;
+  --color-paper: #f3ecdc;
+  --color-paper-2: #e6dcc6;
+  --color-field: #0f5a54;
+  --color-field-deep: #0a3f3b;
+  --color-on-field: #f3ecdc;
+  --color-highlight: #efb93b;
+  --color-accent: #f0553b;
+  --color-flag: #efb93b;
+  --color-on-accent: #14110d;
+  --color-on-flag: #14110d;
+  --color-error: #a8331c;
+
+  --radius-cut: 18px 5px 20px 7px / 7px 20px 5px 18px;
+  --radius-cut-sm: 10px 3px 11px 4px / 4px 11px 3px 10px;
+  --radius-blob: 46% 54% 55% 45% / 52% 44% 56% 48%;
+
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1.15);
+}
+
+/* ------------------------------------------------------------------ inks */
+
+html[data-ink="workshop"] {
+  --color-field: #0f5a54;
+  --color-field-deep: #0a3f3b;
+  --color-on-field: #f3ecdc;
+  --color-highlight: #efb93b;
+  --color-on-field: #f3ecdc;
+  --color-accent: #f0553b;
+  --color-on-accent: #14110d;
+  --color-flag: #efb93b;
+  --color-on-flag: #14110d;
+  --color-paper: #f3ecdc;
+  --color-paper-2: #e6dcc6;
+}
+
+html[data-ink="mustard"] {
+  --color-field: #e8b02f;
+  --color-field-deep: #c9901c;
+  --color-on-field: #14110d;
+  --color-highlight: #0e3d36;
+  --color-accent: #124a42;
+  --color-on-accent: #f7f1e3;
+  --color-flag: #f4ede0;
+  --color-on-flag: #14110d;
+  --color-paper: #fdf6e6;
+  --color-paper-2: #f0e3c8;
+}
+
+html[data-ink="plum"] {
+  --color-field: #481f45;
+  --color-field-deep: #331530;
+  --color-on-field: #f6ecd9;
+  --color-highlight: #f2b134;
+  --color-accent: #f2b134;
+  --color-on-accent: #241110;
+  --color-flag: #e6c3d8;
+  --color-on-flag: #241110;
+  --color-paper: #f6ecd9;
+  --color-paper-2: #e8dac0;
+}
+
+html[data-ink="newsprint"] {
+  --color-field: #e9dfc8;
+  --color-field-deep: #d6c9ad;
+  --color-on-field: #14110d;
+  --color-highlight: #1d4b63;
+  --color-accent: #bf3a21;
+  --color-on-accent: #fbf7ee;
+  --color-flag: #1d4b63;
+  --color-on-flag: #fbf7ee;
+  --color-paper: #fbf7ee;
+  --color-paper-2: #efe7d6;
+}
+
+:root {
+  --reg: 5px;
+  --boil: 0;
+}
+
+/* ------------------------------------------------------------------ base */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--color-accent) var(--color-field-deep);
+  }
+
+  body {
+    background-color: var(--color-field);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* The press grain rides on the whole document. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.24;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+  }
+
+  /* Halftone screen over the whole document; the ink room can lift it. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 59;
+    pointer-events: none;
+    opacity: 0.11;
+    mix-blend-mode: overlay;
+    background-image: radial-gradient(
+      circle at center,
+      var(--color-ink) 1px,
+      transparent 1.25px
+    );
+    background-size: 9px 9px;
+    transition: opacity 0.3s linear;
+  }
+  html[data-dots="off"] body::after {
+    opacity: 0;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px dashed currentColor;
+    outline-offset: 3px;
+  }
+
+  input,
+  textarea {
+    caret-color: var(--color-accent);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-field-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-accent);
+    border: 3px solid var(--color-field-deep);
+    border-radius: 0;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-flag);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------- materials */
+
+@layer components {
+  /* Paper: flat colour plus fibre and a faint edge darkening. */
+  .paper {
+    background-color: var(--color-paper);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.42'/%3E%3C/svg%3E");
+    background-blend-mode: multiply;
+    background-size: 180px 180px;
+  }
+
+  /* Halftone dot field, sized in em so it scales with the element. */
+  .dots {
+    background-image: radial-gradient(
+      circle at center,
+      var(--color-ink) 1.1px,
+      transparent 1.3px
+    );
+    background-size: 7px 7px;
+    opacity: 0.18;
+  }
+
+  .dots-fine {
+    background-image: radial-gradient(
+      circle at center,
+      currentColor 0.8px,
+      transparent 1px
+    );
+    background-size: 5px 5px;
+  }
+
+  /* Fine ink rules that read as printed, not as CSS borders. */
+  .rule {
+    border: 0;
+    height: 2px;
+    background: currentColor;
+    opacity: 0.85;
+  }
+
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.688rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  /* Accent ink that still passes contrast when it becomes text on paper. */
+  .ink-accent {
+    color: color-mix(in oklab, var(--color-accent) 74%, var(--color-ink));
+  }
+  .text-error {
+    color: var(--color-error);
+  }
+
+  /* Registration target, drawn rather than iconified. */
+  .regmark {
+    width: 18px;
+    height: 18px;
+    position: relative;
+    opacity: 0.65;
+  }
+  .regmark::before,
+  .regmark::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+  .regmark::before {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    translate: -50% 0;
+  }
+  .regmark::after {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    translate: 0 -50%;
+  }
+
+  /* ------------------------------------------------------- control skins */
+
+  .btn {
+    --face: var(--color-paper);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 0.9rem 1.35rem;
+    min-height: 44px;
+    border-radius: var(--radius-cut-sm);
+    border: 2px solid var(--color-ink);
+    color: var(--color-ink);
+    background: var(--face);
+    box-shadow: calc(var(--reg) * -1) var(--reg) 0 0
+      var(--plate, var(--color-accent));
+    cursor: pointer;
+    transition:
+      translate 0.16s var(--ease-snap),
+      box-shadow 0.22s var(--ease-snap),
+      background-color 0.16s linear;
+    touch-action: manipulation;
+  }
+  .btn:hover {
+    translate: 0 -1px;
+    box-shadow: calc(var(--reg) * -0.4) calc(var(--reg) * 0.4) 0 0
+      var(--plate, var(--color-accent));
+  }
+  .btn:active {
+    translate: 1px 1px;
+    box-shadow: calc(var(--reg) * 0.5) calc(var(--reg) * -0.5) 0 0
+      var(--plate, var(--color-accent));
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    cursor: not-allowed;
+    color: color-mix(in oklab, var(--color-ink) 68%, var(--color-paper));
+    background-image: radial-gradient(
+      circle at center,
+      color-mix(in oklab, var(--color-ink) 30%, var(--color-paper)) 0.9px,
+      transparent 1.1px
+    );
+    background-size: 5px 5px;
+    box-shadow: none;
+    translate: 0 0;
+  }
+
+  .btn-solid {
+    --face: var(--color-accent);
+    color: var(--color-on-accent);
+    --plate: var(--color-flag);
+  }
+  .btn-flag {
+    --face: var(--color-flag);
+    color: var(--color-on-flag);
+    --plate: var(--color-accent);
+  }
+  .btn-ink {
+    --face: var(--color-ink);
+    color: var(--color-paper);
+    --plate: var(--color-accent);
+  }
+  .btn-ghost {
+    --face: transparent;
+    border-color: transparent;
+    --plate: transparent;
+  }
+  .btn-ghost:hover {
+    --face: color-mix(in oklab, var(--color-paper) 88%, var(--color-flag));
+    border-color: var(--color-ink);
+  }
+  .btn-sm {
+    min-height: 34px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.688rem;
+    letter-spacing: 0.12em;
+  }
+  .btn-icon {
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    min-height: 0;
+    flex: none;
+  }
+  .btn-icon.btn-sm {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Focus: the crop marks close in. */
+  .btn:focus-visible,
+  .skin:focus-visible {
+    outline: 2px dashed var(--color-ink);
+    outline-offset: 4px;
+  }
+
+  .field {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border: 2px solid var(--color-ink);
+    border-radius: var(--radius-cut-sm);
+    padding: 0.7rem 0.9rem;
+    min-height: 44px;
+    box-shadow: inset 0 0 0 0 transparent;
+  }
+  .field::placeholder {
+    color: color-mix(in oklab, var(--color-ink) 58%, var(--color-paper));
+  }
+  .field:hover {
+    background: color-mix(in oklab, var(--color-paper) 94%, var(--color-flag));
+  }
+  .field:focus-visible {
+    outline: 2px dashed var(--color-accent);
+    outline-offset: 3px;
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--color-accent);
+    background-image: radial-gradient(
+      circle at center,
+      color-mix(in oklab, var(--color-accent) 26%, transparent) 0.9px,
+      transparent 1.1px
+    );
+    background-size: 6px 6px;
+  }
+  .field:disabled {
+    color: color-mix(in oklab, var(--color-ink) 55%, var(--color-paper));
+    background-image: radial-gradient(
+      circle at center,
+      color-mix(in oklab, var(--color-ink) 24%, var(--color-paper)) 0.9px,
+      transparent 1.1px
+    );
+    background-size: 5px 5px;
+    cursor: not-allowed;
+  }
+
+  /* Panels float on their own plate; the plate is the only depth. */
+  .panel {
+    position: relative;
+    background: var(--color-paper);
+    border: 2px solid var(--color-ink);
+    border-radius: var(--radius-cut);
+  }
+  .panel-plate {
+    box-shadow: calc(var(--reg) * -1.4) calc(var(--reg) * 1.4) 0 0
+      var(--plate, var(--color-accent));
+  }
+
+  /* Speech balloon with a cut tail. */
+  .balloon {
+    position: relative;
+    background: var(--color-paper);
+    border: 2px solid var(--color-ink);
+    border-radius: 16px 4px 18px 6px / 6px 18px 4px 16px;
+    padding: 0.6rem 0.9rem;
+  }
+  .balloon::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    bottom: -12px;
+    width: 14px;
+    height: 14px;
+    background: var(--color-paper);
+    border-right: 2px solid var(--color-ink);
+    border-bottom: 2px solid var(--color-ink);
+    rotate: 45deg;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+
+  /* Cut-paper corner: four different radii, never a pill by default. */
+  .cut {
+    border-radius: var(--radius-cut);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 70;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border: 2px solid var(--color-ink);
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+/* ------------------------------------------------------------ motion */
+
+@keyframes hop {
+  0% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  22% {
+    translate: 0 -26px;
+    rotate: -5deg;
+  }
+  46% {
+    translate: 0 -34px;
+    rotate: 4deg;
+  }
+  72% {
+    translate: 0 -8px;
+    rotate: -2deg;
+  }
+  86% {
+    translate: 0 2px;
+    rotate: 0deg;
+  }
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    rotate: -2.5deg;
+  }
+  50% {
+    rotate: 2.5deg;
+  }
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    scale: 1 1;
+  }
+  95% {
+    scale: 1 0.1;
+  }
+}
+
+@keyframes press-pass {
+  0% {
+    translate: 0 -120%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0 120%;
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.animate-hop {
+  animation: hop 620ms var(--ease-snap);
+}
+.animate-wobble {
+  animation: wobble 900ms ease-in-out infinite;
+}
+.mood-blink {
+  animation: blink 5s ease-in-out infinite;
+  transform-origin: center;
+}
+
