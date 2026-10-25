@@ -29,11 +29,15 @@ export default defineConfig({
     },
   ],
   // The suite runs against the production build, which is what ships.
+  // Bind the preview to 127.0.0.1 explicitly: on a fresh runner `localhost` can
+  // resolve to ::1 first, and the health check would poll an address nothing
+  // answers on.
   webServer: {
-    command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
+    command: `npm run build && npm run preview -- --port ${PORT} --strictPort --host 127.0.0.1`,
     url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: !CI,
     timeout: 180_000,
-    stdout: "ignore",
+    stdout: "pipe",
+    stderr: "pipe",
   },
 });
