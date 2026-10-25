@@ -41,6 +41,11 @@ jobs:
 
       - run: npm ci
 
+      # Trusted publishing (OIDC) needs npm >= 11.5.1; the npm that ships with the
+      # Node 22 image is older, and a silent fallback to a token would be worse than
+      # a fresh npm.
+      - run: npm install -g npm@^11.21.1
+
       # Same gates as ci.yml, in the same order. A palette that no longer passes
       # the contrast audit must not reach the registry.
       - run: npm run build:lib
@@ -55,6 +60,16 @@ jobs:
           else
             dist_tag=latest
           fi
+          # Two ways in, one command. With NPM_TOKEN set the granular token is used;
+          # without it npm exchanges the Actions OIDC token itself (trusted
+          # publishing) and no secret exists to leak. An empty NODE_AUTH_TOKEN must
+          # be unset, or npm tries to authenticate with a blank token and fails.
+          if [ -n "${NODE_AUTH_TOKEN:-}" ]; then
+            echo "publishing with the NPM_TOKEN secret"
+          else
+            echo "publishing with trusted publishing (OIDC)"
+            unset NODE_AUTH_TOKEN
+          fi
           npm publish --provenance --access public --tag "$dist_tag"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -68,16 +83,26 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-# One-time setup, in this order:
+# Publishing needs 2FA, or a granular token that is allowed to skip it. As of
+# August 2026 a bypass-2FA token can no longer create tokens, change access,
+# manage maintainers or configure trusted publishing — those always take an
+# interactive 2FA challenge. npm has announced that from January 2027 a
+# bypass-2FA token loses direct publish as well, keeping only reads and staged
+# publishes, so trusted publishing is the shape to aim at:
 #
-#   1. Bootstrap. npm cannot attach a trusted publisher to a package that does not
-#      exist yet, so the first version goes out by hand: npm login, then
-#      npm publish --access public from this repo at the matching tag.
-#   2. From then on, either keep a granular automation token in the NPM_TOKEN
-#      secret (that is what the step above reads), or configure a trusted
-#      publisher at npmjs.com/package/splotch-ui/access — repository
-#      akaporn-katip/splotch, workflow release.yml — and delete NODE_AUTH_TOKEN;
-#      the npm CLI in Node 22 reads the OIDC token itself and no secret is needed.
+#   1. Bootstrap by hand, once. A trusted publisher can only be attached to a
+#      package that already exists, so the first version goes out interactively:
+#      npm login, npm publish --access public, answer the OTP prompt.
+#   2. Attach the publisher at npmjs.com/package/splotch-ui/access — repository
+#      akaporn-katip/splotch, workflow release.yml — which itself needs an
+#      interactive 2FA challenge.
+#   3. Delete the NPM_TOKEN secret if you added one. The publish step above then
+#      takes the OIDC path: no token, no OTP, per-release provenance signed by
+#      Actions.
+#
+# The NPM_TOKEN fallback exists for the window before step 2, and for a bootstrap
+# push from CI. It requires the token to be created with "bypass 2FA" enabled,
+# which is off by default at token creation.
 #
 # Provenance is public-record: it requires this repository to stay public and the
 # publish to run in Actions, not on a laptop.
