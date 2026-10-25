@@ -3,7 +3,7 @@
 A cartoon component kit for React. Radix primitives underneath, cut paper on top:
 22 parts, printed in misregistered spot inks, themed by four CSS variables.
 
-**On npm as [`splotch-ui`](https://www.npmjs.com/package/splotch-ui), published from a
+**On npm as [`@katipwork/splotch-ui`](https://www.npmjs.com/package/@katipwork/splotch-ui), published from a
 GitHub release.** Install it, or copy the source if you would rather own it — the
 component source is the deliverable either way.
 
@@ -60,14 +60,14 @@ request.
 ## Use it in your project
 
 ```bash
-npm install splotch-ui
+npm install @katipwork/splotch-ui
 ```
 
 Then import the sheet once and the parts you need:
 
 ```tsx
-import "splotch-ui/index.css";
-import { Button, Dialog, INKS } from "splotch-ui";
+import "@katipwork/splotch-ui/index.css";
+import { Button, Dialog, INKS } from "@katipwork/splotch-ui";
 ```
 
 Version 0.1.0 is the first release; a GitHub release tagged `v0.1.0` is what

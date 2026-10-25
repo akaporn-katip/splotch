@@ -37,7 +37,7 @@ jobs:
             echo "Tag v$version, or bump package.json to match $tag."
             exit 1
           fi
-          echo "publishing splotch-ui@$version from $tag"
+          echo "publishing @katipwork/splotch-ui@$version from $tag"
 
       - run: npm ci
 
@@ -90,10 +90,16 @@ jobs:
 # bypass-2FA token loses direct publish as well, keeping only reads and staged
 # publishes, so trusted publishing is the shape to aim at:
 #
+# The registry name is scoped: @katipwork/splotch-ui. A scoped first publish needs the
+# token's account to be a member of the @katipwork scope (npm org) — otherwise the
+# registry answers 403/404 and the run fails at the last step, after every gate has
+# already passed. `publishConfig.access: public` in package.json is what keeps a
+# scoped package from defaulting to private.
+#
 #   1. Bootstrap by hand, once. A trusted publisher can only be attached to a
 #      package that already exists, so the first version goes out interactively:
 #      npm login, npm publish --access public, answer the OTP prompt.
-#   2. Attach the publisher at npmjs.com/package/splotch-ui/access — repository
+#   2. Attach the publisher at npmjs.com/package/@katipwork/splotch-ui/access — repository
 #      akaporn-katip/splotch, workflow release.yml — which itself needs an
 #      interactive 2FA challenge.
 #   3. Delete the NPM_TOKEN secret if you added one. The publish step above then

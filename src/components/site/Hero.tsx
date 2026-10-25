@@ -168,7 +168,7 @@ export function Hero() {
                     </DialogTrigger>
                     <DialogContent
                       title="Take the kit"
-                      description="On npm as splotch-ui, published from a GitHub release — or copy src/ into your app. The source is the deliverable either way."
+                      description="On npm as @katipwork/splotch-ui, published from a GitHub release — or copy src/ into your app. The source is the deliverable either way."
                       kicker="Imprint"
                     >
                       <ol className="grid gap-3 text-[0.9375rem] leading-snug text-ink/85">
@@ -176,7 +176,7 @@ export function Hero() {
                           <span className="display ink-accent shrink-0 text-lg">1</span>
                           <span>
                             Install it:{" "}
-                            <code className="border-b-2 border-ink/30 font-semibold">npm i splotch-ui</code>
+                            <code className="border-b-2 border-ink/30 font-semibold">npm i @katipwork/splotch-ui</code>
                             .
                           </span>
                         </li>
@@ -185,7 +185,7 @@ export function Hero() {
                           <span>
                             Import the sheet once:{" "}
                             <code className="border-b-2 border-ink/30 font-semibold">
-                              splotch-ui/index.css
+                              @katipwork/splotch-ui/index.css
                             </code>
                             .
                           </span>

@@ -155,7 +155,7 @@ tabular.
 
 ## Known gaps
 
-- Published to npm as `splotch-ui` by `.github/workflows/release.yml` when a GitHub
+- Published to npm as `@katipwork/splotch-ui` by `.github/workflows/release.yml` when a GitHub
   release is published; the tag must equal `package.json`. Pushes publish nothing.
   The library build lands in `dist-lib/`, the tests are Playwright specs run by
   `npm test`, and CI runs the build, the contrast audit and the tests on every push.

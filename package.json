@@ -1,5 +1,5 @@
 {
-  "name": "splotch-ui",
+  "name": "@katipwork/splotch-ui",
   "version": "0.1.0",
   "description": "A cartoon component kit for React: Radix primitives underneath, cut paper on top. Twenty-one parts printed in misregistered spot inks.",
   "license": "MIT",

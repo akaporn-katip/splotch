@@ -47,11 +47,11 @@ export function Masthead() {
             </DialogTrigger>
             <DialogContent
               title="Take the kit"
-              description="On npm as splotch-ui, published from a GitHub release — or copy the source."
+              description="On npm as @katipwork/splotch-ui, published from a GitHub release — or copy the source."
               kicker="Imprint"
             >
               <p className="text-[0.9375rem] leading-relaxed text-ink/85">
-                <code className="border-b-2 border-ink/30 font-semibold">npm i splotch-ui</code>, then
+                <code className="border-b-2 border-ink/30 font-semibold">npm i @katipwork/splotch-ui</code>, then
                 import the sheet once. Or copy{" "}
                 <code className="border-b-2 border-ink/30 font-semibold">src/components/ui</code>{" "}
                 into your app and lift the ink variables from{" "}

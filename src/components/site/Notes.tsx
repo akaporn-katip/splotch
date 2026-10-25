@@ -17,7 +17,7 @@ const NOTES = [
   },
   {
     title: "What it isn't",
-    body: "Not a promises page and not a paid product. It is on npm as splotch-ui, released from a git tag; the press operator is still a drawing.",
+    body: "Not a promises page and not a paid product. It is on npm as @katipwork/splotch-ui, released from a git tag; the press operator is still a drawing.",
   },
 ];
 
