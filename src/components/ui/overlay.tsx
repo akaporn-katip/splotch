@@ -45,7 +45,7 @@ export function DialogContent({
       <DialogPrimitive.Content
         className={cx(
           panel,
-          "fixed left-1/2 top-1/2 z-50 flex w-[min(92vw,34rem)] max-h-[calc(100dvh-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col",
+          "fixed inset-0 m-auto z-50 flex h-fit w-[min(92vw,34rem)] max-h-[calc(100dvh-2rem)] flex-col",
           "data-[state=open]:animate-[rise_220ms_var(--ease-snap)]",
           className,
         )}
