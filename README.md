@@ -1,7 +1,7 @@
 # Splotch
 
 A cartoon component kit for React. Radix primitives underneath, cut paper on top:
-21 parts, printed in misregistered spot inks, themed by four CSS variables.
+22 parts, printed in misregistered spot inks, themed by four CSS variables.
 
 **On npm as [`splotch-ui`](https://www.npmjs.com/package/splotch-ui), published from a
 GitHub release.** Install it, or copy the source if you would rather own it — the
@@ -26,14 +26,15 @@ src/
       primitives.tsx        Button, IconButton, Badge, Avatar, Progress, Kbd, RegMark
       form.tsx              Input, Textarea, Label, Help, ErrorText, Switch, Checkbox,
                             RadioGroup, Slider, Select, ToggleGroup
+      date-picker.tsx       DatePicker: a month grid in a Popover, arrow keys and all
       overlay.tsx           Dialog, DropdownMenu, ContextMenu, Popover, Tooltip, Toast,
                             Tabs, Accordion
-      icons.tsx             19 icons drawn in one 2px ink stroke
+      icons.tsx             22 icons drawn in one 2px ink stroke
     site/
       Masthead.tsx          sticky printed masthead + mobile contents dialog
       Hero.tsx              the proof sheet; live controls drive the character
       Mascot.tsx            Splotch, drawn as one ink plate over one spot plate
-      Lab.tsx               the parts sheet: 4 tabs, 21 live specimens, markup dialogs
+      Lab.tsx               the parts sheet: 4 tabs, 22 live specimens, markup dialogs
       Anatomy.tsx           one button, taken apart
       Inks.tsx              the ink room: four ink sets, registration, reprint
       Notes.tsx             notes from the press + colophon

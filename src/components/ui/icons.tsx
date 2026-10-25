@@ -162,3 +162,24 @@ export const Eye = (p: IconProps) => (
     <path d="M12 9.4a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Z" />
   </Icon>
 );
+
+export const CalendarIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4.4 7.1h15.2v13.2H4.4z" />
+    <path d="M4.6 11.6h14.8" />
+    <path d="M8.4 3.9v4.4" />
+    <path d="M15.7 3.9v4.4" />
+  </Icon>
+);
+
+export const ChevronLeft = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m14.8 5.4-6.4 6.6 6.4 6.6" />
+  </Icon>
+);
+
+export const ChevronRight = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m9.2 5.4 6.4 6.6-6.4 6.6" />
+  </Icon>
+);

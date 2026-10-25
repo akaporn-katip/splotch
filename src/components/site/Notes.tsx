@@ -43,7 +43,7 @@ export function Notes() {
 
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <Badge tone="ink">4 inks</Badge>
-              <Badge tone="solid">21 parts</Badge>
+              <Badge tone="solid">22 parts</Badge>
               <Badge tone="paper">0 images</Badge>
             </div>
 

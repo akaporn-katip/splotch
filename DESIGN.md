@@ -112,10 +112,17 @@ Depth is always the plate; state is always register.
 | empty    | dashed key line, drawn mark, one action                                |
 | selected | the part is printed in the spot ink, not merely highlighted            |
 
-Inventory (21): Button (4 tones, 2 sizes), IconButton, Badge (4 tones), Avatar,
+The date picker is the one part with no Radix primitive behind it: Popover owns
+the opening, the escape key and the return of focus, and the calendar itself is
+ours — a month grid with arrow keys, Home/End for the week, PageUp/PageDown (with
+Shift for the year) and one roving tab stop. Days outside the month are printed
+at reduced ink, today carries a drawn ring, the chosen day is printed in the spot
+ink, and days outside `min`/`max` carry a ruled-out hatch instead of a grey ghost.
+
+Inventory (22): Button (4 tones, 2 sizes), IconButton, Badge (4 tones), Avatar,
 Progress, ToggleGroup, Switch, Slider (diamond thumb), Checkbox, RadioGroup,
-Select, Input, Textarea, Empty state, Dialog, DropdownMenu, ContextMenu, Popover,
-Tooltip, Toast, Tabs, Accordion.
+Select, Input, Textarea, Empty state, DatePicker, Dialog, DropdownMenu,
+ContextMenu, Popover, Tooltip, Toast, Tabs, Accordion.
 
 ## Motion
 

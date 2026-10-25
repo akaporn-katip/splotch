@@ -8,6 +8,7 @@
 
 export * from "./components/ui/primitives";
 export * from "./components/ui/form";
+export * from "./components/ui/date-picker";
 export * from "./components/ui/overlay";
 export * from "./components/ui/icons";
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Button, IconButton, Badge, Avatar, Progress } from "../ui/primitives";
+import { DatePicker } from "../ui/date-picker";
 import {
   Checkbox,
   Input,
@@ -264,6 +265,7 @@ function ControlParts() {
 }
 
 function InputParts() {
+  const [date, setDate] = useState<Date | undefined>(() => new Date(2026, 9, 25));
   const [radio, setRadio] = useState("cut");
   const [ink, setInk] = useState("teal");
   const [agree, setAgree] = useState<boolean | "indeterminate">(true);
@@ -432,6 +434,26 @@ function InputParts() {
           </Button>
         </div>
       </Spec>
+
+      <Spec
+        n={13}
+        name="Date picker"
+        note="One month, printed as a grid. Arrow keys walk it, Escape closes it."
+        code={`
+<DatePicker
+  label="Press date"
+  value={date}
+  onValueChange={setDate}
+/>`}
+      >
+        <DatePicker
+          label="Press date"
+          value={date}
+          onValueChange={setDate}
+          hint="The trigger shows the plate date."
+          className="w-full max-w-60"
+        />
+      </Spec>
     </SpecGrid>
   );
 }
@@ -443,7 +465,7 @@ function OverlayParts() {
   return (
     <SpecGrid>
       <Spec
-        n={13}
+        n={14}
         name="Dialog"
         note="A proof card laid over the sheet. Escape closes it."
         code={`
@@ -494,7 +516,7 @@ function OverlayParts() {
       </Spec>
 
       <Spec
-        n={14}
+        n={15}
         name="Menu"
         note="A press drawer: labels, a separator, and a destructive item."
         code={`
@@ -540,7 +562,7 @@ function OverlayParts() {
       </Spec>
 
       <Spec
-        n={15}
+        n={16}
         name="Popover"
         note="A margin note that stays put while you work."
         code={`
@@ -571,7 +593,7 @@ function OverlayParts() {
       </Spec>
 
       <Spec
-        n={16}
+        n={17}
         name="Tooltip"
         note="A caption box. Never the only label for anything."
         code={`
@@ -601,7 +623,7 @@ function OverlayParts() {
       </Spec>
 
       <Spec
-        n={17}
+        n={18}
         name="Accordion"
         note="Notes folded under a rule. Keyboard: arrows and Home."
         code={`
@@ -625,7 +647,7 @@ function OverlayParts() {
       </Spec>
 
       <Spec
-        n={18}
+        n={19}
         name="Context menu"
         note="Right-click the swatch. Same drawer, different finger."
         code={`
@@ -693,7 +715,7 @@ function FeedbackParts() {
   return (
     <SpecGrid>
       <Spec
-        n={19}
+        n={20}
         name="Toast"
         note="Bottom right, four seconds, dismissible by keyboard."
         code={`
@@ -718,7 +740,7 @@ function FeedbackParts() {
       </Spec>
 
       <Spec
-        n={20}
+        n={21}
         name="Avatar"
         note="Initials in the display face, cut from a wobbly circle."
         code={`
@@ -735,7 +757,7 @@ function FeedbackParts() {
       </Spec>
 
       <Spec
-        n={21}
+        n={22}
         name="Badges"
         note="Four stamps. Short words, always."
         code={`
@@ -766,14 +788,14 @@ export function Lab() {
               <span aria-hidden="true" className="h-0.5 w-10 bg-current" />
             </div>
             <h2 className="display text-[clamp(2.1rem,5.4vw,3.9rem)] text-on-field">
-              Twenty-one parts,
+              Twenty-two parts,
               <br />
               <span className="text-highlight">no grey boxes.</span>
             </h2>
           </div>
           <p className="max-w-[46ch] text-[1rem] leading-relaxed text-on-field/80 lg:pb-2">
             Every part below is live. Tab into it, press it, open it — the markup is one
-            dialog away. Four tabs, twenty-one specimens, one paper stock.
+            dialog away. Four tabs, twenty-two specimens, one paper stock.
           </p>
         </div>
 

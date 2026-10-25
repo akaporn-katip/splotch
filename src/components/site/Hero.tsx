@@ -136,7 +136,7 @@ export function Hero() {
 
               <p className="mt-4 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ink/85 sm:text-[1.125rem]">
                 A cartoon component kit for React. Radix primitives underneath, cut paper
-                on top — twenty-one parts, every one keyboard-first, and every one that
+                on top — twenty-two parts, every one keyboard-first, and every one that
                 answers back when you press it.
               </p>
 
@@ -237,7 +237,7 @@ export function Hero() {
                   ))}
                 </div>
                 <span className="label text-right text-[0.6rem] leading-tight text-ink/60">
-                  21 parts
+                  22 parts
                   <br />
                   0 grey boxes
                 </span>
