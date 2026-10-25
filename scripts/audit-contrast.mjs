@@ -13,8 +13,7 @@
  * focus crop mark, at 3:1. Both of those are GATING: a failure exits 1.
  *
  * Two pairs are DECORATIVE and are reported only. `accent/paper` is the
- * registration plate a panel is printed over (and the invalid key line, whose
- * state is named by the error text below the field, not by its colour), and
+ * registration plate a panel is printed over, and
  * `paper/field` is a pale stock printed on a pale ground in mustard and newsprint.
  * Neither is text and neither is the only thing that identifies a control, so no
  * WCAG threshold applies to it: a 1.4.11 threshold copied onto them measures art,

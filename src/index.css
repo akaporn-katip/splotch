@@ -423,10 +423,10 @@ html[data-ink="newsprint"] {
   }
 
   .field[aria-invalid="true"] {
-    border-color: var(--color-accent);
+    border-color: var(--color-error);
     background-image: radial-gradient(
       circle at center,
-      color-mix(in oklab, var(--color-accent) 26%, transparent) 0.9px,
+      color-mix(in oklab, var(--color-error) 26%, transparent) 0.9px,
       transparent 1.1px
     );
     background-size: 6px 6px;

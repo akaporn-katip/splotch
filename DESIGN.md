@@ -108,7 +108,7 @@ Depth is always the plate; state is always register.
 | press    | plate overshoots *past* register; the part translates 1px down         |
 | focus    | 2px dashed crop mark at 4px offset — ink on stock (`--color-ring`), the ground's text ink on the ground (`.ring-on-field`). Two exceptions: tab panels draw it inset (`-4px`) because they sit inside a framed sheet, and menu/select items draw none — the highlight band is their state |
 | disabled | halftone face, no plate, ink text at 68%                               |
-| error    | spot-ink key line + halftone tint + a message that names the recovery  |
+| error    | error-ink key line + halftone tint + a message that names the recovery |
 | empty    | dashed key line, drawn mark, one action                                |
 | selected | the part is printed in the spot ink, not merely highlighted            |
 
