@@ -1,0 +1,83 @@
+name: Release
+
+# Publishing happens on a GitHub release, never on a push. Cut a release whose tag
+# is v<package.json version>, and this workflow re-runs every gate CI runs before
+# it hands the tarball to npm.
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # npm provenance signs the tarball with a short-lived OIDC token; without
+      # this the publish fails rather than shipping unsigned.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: The release tag must be the published version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          tag="$GITHUB_REF_NAME"
+          if [ "v$version" != "$tag" ]; then
+            echo "::error::release tag '$tag' does not match package.json version '$version'"
+            echo "Tag v$version, or bump package.json to match $tag."
+            exit 1
+          fi
+          echo "publishing splotch-ui@$version from $tag"
+
+      - run: npm ci
+
+      # Same gates as ci.yml, in the same order. A palette that no longer passes
+      # the contrast audit must not reach the registry.
+      - run: npm run build:lib
+      - run: npm run audit:contrast
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
+      - name: Publish to npm
+        run: |
+          if [ "${{ github.event.release.prerelease }}" = "true" ]; then
+            dist_tag=next
+          else
+            dist_tag=latest
+          fi
+          npm publish --provenance --access public --tag "$dist_tag"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Upload the tarball that shipped
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: splotch-ui-${{ github.ref_name }}
+          path: "*.tgz"
+          if-no-files-found: ignore
+          retention-days: 14
+
+# One-time setup, in this order:
+#
+#   1. Bootstrap. npm cannot attach a trusted publisher to a package that does not
+#      exist yet, so the first version goes out by hand: npm login, then
+#      npm publish --access public from this repo at the matching tag.
+#   2. From then on, either keep a granular automation token in the NPM_TOKEN
+#      secret (that is what the step above reads), or configure a trusted
+#      publisher at npmjs.com/package/splotch-ui/access — repository
+#      akaporn-katip/splotch, workflow release.yml — and delete NODE_AUTH_TOKEN;
+#      the npm CLI in Node 22 reads the OIDC token itself and no secret is needed.
+#
+# Provenance is public-record: it requires this repository to stay public and the
+# publish to run in Actions, not on a laptop.

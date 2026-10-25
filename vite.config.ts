@@ -46,6 +46,26 @@ function dropEmptyChunks(): Plugin {
   };
 }
 
+/**
+ * `import "splotch-ui/index.css"` is a side-effect import of a stylesheet, and
+ * TypeScript will not resolve a `.css` export target without a declaration for it
+ * ("Cannot find module or type declarations for side-effect import"). Emit the
+ * declaration next to the sheet so the export can carry a `types` condition.
+ */
+function styleTypes(): Plugin {
+  return {
+    name: "splotch-style-types",
+    enforce: "post",
+    generateBundle() {
+      this.emitFile({
+        type: "asset",
+        fileName: "style.d.ts",
+        source: "declare const css: string;\nexport default css;\n",
+      });
+    },
+  };
+}
+
 /** React is the peer; everything the kit imports itself (Radix) is a plain dependency. */
 const EXTERNAL = [/^react($|\/)/, /^react-dom($|\/)/, /^@radix-ui\//];
 
@@ -55,7 +75,7 @@ export default defineConfig(({ mode }) => {
 
   // `npm run build:lib` — the installable kit: dist-lib/index.js and style.css.
   return {
-    plugins: [react(), tailwindcss(), styleSheet(), dropEmptyChunks()],
+    plugins: [react(), tailwindcss(), styleSheet(), dropEmptyChunks(), styleTypes()],
     build: {
       outDir: "dist-lib",
       target: "es2022",

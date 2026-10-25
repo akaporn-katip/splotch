@@ -9,3 +9,6 @@ dist-lib
 # playwright-report; traces and failure artifacts land in test-results.
 playwright-report
 test-results
+
+# npm pack output (the release workflow uploads its own)
+*.tgz

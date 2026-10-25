@@ -148,9 +148,10 @@ tabular.
 
 ## Known gaps
 
-- Not published to npm; installed from a local path with a `file:` specifier, or
-  by copying `src/`. The library build lands in `dist-lib/`; the tests are
-  Playwright specs run by `npm test`; CI runs the build, the contrast audit and
-  the tests.
+- Published to npm as `splotch-ui` by `.github/workflows/release.yml` when a GitHub
+  release is published; the tag must equal `package.json`. Pushes publish nothing.
+  The library build lands in `dist-lib/`, the tests are Playwright specs run by
+  `npm test`, and CI runs the build, the contrast audit and the tests on every push.
+  The demo page itself is not deployed anywhere — it is built, not hosted.
 - The 1930s "boiling line" is approximated by static displacement-free geometry and
   a tremble on the character only; there is no per-frame line boil.

@@ -3,9 +3,9 @@
 A cartoon component kit for React. Radix primitives underneath, cut paper on top:
 21 parts, printed in misregistered spot inks, themed by four CSS variables.
 
-**Not on npm, and never will be: `"private": true` is deliberate.** You install the
-kit from this folder with a `file:` specifier, or by copying the source. Nothing here
-is for sale.
+**On npm as [`splotch-ui`](https://www.npmjs.com/package/splotch-ui), published from a
+GitHub release.** Install it, or copy the source if you would rather own it — the
+component source is the deliverable either way.
 
 ```bash
 npm install
@@ -58,17 +58,20 @@ request.
 
 ## Use it in your project
 
-Nothing is on npm — `private` is set on purpose — so point a project at your local
-copy of this repo. Then import the sheet once and the parts you need:
-
 ```bash
-npm install file:../cartoon-ui    # or: npm link ../cartoon-ui
+npm install splotch-ui
 ```
+
+Then import the sheet once and the parts you need:
 
 ```tsx
 import "splotch-ui/index.css";
 import { Button, Dialog, INKS } from "splotch-ui";
 ```
+
+Version 0.1.0 is the first release; a GitHub release tagged `v0.1.0` is what
+published it, and the workflow refuses to publish a tag that disagrees with
+`package.json`.
 
 `npm run build:lib` is what gets installed: `dist-lib/index.js`, `dist-lib/index.d.ts`
 and `dist-lib/style.css` — the last is what the `./index.css` subpath points at.
@@ -111,11 +114,11 @@ Reusing the look elsewhere?
 - **Two builds.** `npm run build` bakes the demo into `dist/`; `npm run build:lib`
   bakes the kit into `dist-lib/` — one ESM entry, its declarations, one stylesheet.
   The demo sections never reach the kit.
-- **Private on purpose.** `"private": true` stops `npm publish` dead, which is why
-  there is no `prepublishOnly` script to run a build nobody can ship. `files`,
-  `exports`, `main`, `module`, `types` and `peerDependencies` are there for the one
-  consumer that exists — a `file:` install — and `sideEffects` marks the shipped
-  stylesheet as side-effectful so it is not tree-shaken away.
+- **Releases publish, pushes do not.** `.github/workflows/release.yml` runs on a
+  published GitHub release: it checks the tag against `package.json`, repeats every
+  gate CI runs, then `npm publish --provenance --access public`. `prepublishOnly`
+  rebuilds the kit and re-runs the contrast audit, so a hand publish cannot ship a
+  palette that fails its own audit. Prereleases go out under the `next` dist-tag.
 - **No raster images.** Every mark — grain, halftone, registration targets, the
   character, the icons, the stamp — is CSS or inline SVG.
 - **Depth is a second ink, not a shadow.** Raised parts carry a spot-colour plate

@@ -168,19 +168,27 @@ export function Hero() {
                     </DialogTrigger>
                     <DialogContent
                       title="Take the kit"
-                      description="Splotch is not on npm and never will be. Install it from this folder with a file: specifier, or copy src/ into your app — nothing is for sale, and the source is the deliverable."
+                      description="On npm as splotch-ui, published from a GitHub release — or copy src/ into your app. The source is the deliverable either way."
                       kicker="Imprint"
                     >
                       <ol className="grid gap-3 text-[0.9375rem] leading-snug text-ink/85">
                         <li className="flex gap-3">
                           <span className="display ink-accent shrink-0 text-lg">1</span>
-                          Copy <code className="mx-1 border-b-2 border-ink/30 font-semibold">src/components/ui</code>{" "}
-                          into your app.
+                          <span>
+                            Install it:{" "}
+                            <code className="border-b-2 border-ink/30 font-semibold">npm i splotch-ui</code>
+                            .
+                          </span>
                         </li>
                         <li className="flex gap-3">
                           <span className="display ink-accent shrink-0 text-lg">2</span>
-                          Lift the ink variables from{" "}
-                          <code className="mx-1 border-b-2 border-ink/30 font-semibold">src/index.css</code>.
+                          <span>
+                            Import the sheet once:{" "}
+                            <code className="border-b-2 border-ink/30 font-semibold">
+                              splotch-ui/index.css
+                            </code>
+                            .
+                          </span>
                         </li>
                         <li className="flex gap-3">
                           <span className="display ink-accent shrink-0 text-lg">3</span>

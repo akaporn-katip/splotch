@@ -47,11 +47,13 @@ export function Masthead() {
             </DialogTrigger>
             <DialogContent
               title="Take the kit"
-              description="Not on npm — install it from this folder with a file: specifier, or copy the source."
+              description="On npm as splotch-ui, published from a GitHub release — or copy the source."
               kicker="Imprint"
             >
               <p className="text-[0.9375rem] leading-relaxed text-ink/85">
-                Copy <code className="border-b-2 border-ink/30 font-semibold">src/components/ui</code>{" "}
+                <code className="border-b-2 border-ink/30 font-semibold">npm i splotch-ui</code>, then
+                import the sheet once. Or copy{" "}
+                <code className="border-b-2 border-ink/30 font-semibold">src/components/ui</code>{" "}
                 into your app and lift the ink variables from{" "}
                 <code className="border-b-2 border-ink/30 font-semibold">src/index.css</code>. Every
                 part is a thin wrapper over a Radix primitive, so keyboard behaviour comes

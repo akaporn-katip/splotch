@@ -17,7 +17,7 @@ const NOTES = [
   },
   {
     title: "What it isn't",
-    body: "Not on npm, not a promises page. Install it from this folder with a file: specifier, or copy src/ into your app; nothing is for sale, and the press operator is a drawing.",
+    body: "Not a promises page and not a paid product. It is on npm as splotch-ui, released from a git tag; the press operator is still a drawing.",
   },
 ];
 
