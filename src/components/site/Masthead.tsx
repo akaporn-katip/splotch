@@ -1,5 +1,5 @@
 import { Button, Badge, IconButton } from "../ui/primitives";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/overlay";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "../ui/overlay";
 import { ArrowUpRight, Close, Grid, Splat } from "../ui/icons";
 
 const LINKS = [
@@ -40,14 +40,14 @@ export function Masthead() {
           </Badge>
           <Dialog>
             <DialogTrigger asChild>
-              <Button size="sm" tone="flag" className="hidden sm:inline-flex">
+              <Button size="sm" tone="flag" className="hidden ring-on-field sm:inline-flex">
                 Take the kit
                 <ArrowUpRight size={15} />
               </Button>
             </DialogTrigger>
             <DialogContent
               title="Take the kit"
-              description="Splotch is a demo surface, not a published package. The source is the deliverable."
+              description="Not on npm — install it from this folder with a file: specifier, or copy the source."
               kicker="Imprint"
             >
               <p className="text-[0.9375rem] leading-relaxed text-ink/85">
@@ -63,7 +63,7 @@ export function Masthead() {
           {/* Mobile menu reuses the kit's own dialog. */}
           <Dialog>
             <DialogTrigger asChild>
-              <IconButton tone="ghost" label="Open menu" className="text-on-field md:hidden">
+              <IconButton tone="ghost" label="Open menu" className="text-on-field ring-on-field md:hidden">
                 <Grid size={20} />
               </IconButton>
             </DialogTrigger>
@@ -84,12 +84,12 @@ export function Masthead() {
                   </DialogTrigger>
                 ))}
               </nav>
-              <DialogTrigger asChild>
+              <DialogClose asChild>
                 <Button className="mt-5 w-full" tone="solid">
                   Close
                   <Close size={16} />
                 </Button>
-              </DialogTrigger>
+              </DialogClose>
             </DialogContent>
           </Dialog>
         </div>

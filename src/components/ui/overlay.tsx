@@ -45,12 +45,12 @@ export function DialogContent({
       <DialogPrimitive.Content
         className={cx(
           panel,
-          "fixed left-1/2 top-1/2 z-50 w-[min(92vw,34rem)] -translate-x-1/2 -translate-y-1/2",
+          "fixed left-1/2 top-1/2 z-50 flex w-[min(92vw,34rem)] max-h-[calc(100dvh-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col",
           "data-[state=open]:animate-[rise_220ms_var(--ease-snap)]",
           className,
         )}
       >
-        <div className="flex items-center justify-between gap-4 border-b-2 border-ink bg-flag px-5 py-3 text-on-flag">
+        <div className="flex shrink-0 items-center justify-between gap-4 border-b-2 border-ink bg-flag px-5 py-3 text-on-flag">
           <span className="label">{kicker}</span>
           <DialogPrimitive.Close asChild>
             <IconButton tone="ghost" size="sm" label="Close" className="text-ink">
@@ -58,7 +58,7 @@ export function DialogContent({
             </IconButton>
           </DialogPrimitive.Close>
         </div>
-        <div className="p-5 sm:p-7">
+        <div className="min-h-0 overflow-y-auto p-5 sm:p-7">
           <DialogPrimitive.Title className="display text-[clamp(1.6rem,4vw,2.25rem)]">
             {title}
           </DialogPrimitive.Title>
@@ -303,7 +303,15 @@ export function TabsList({
   );
 }
 
-export function TabsTrigger({ value, children }: { value: string; children: ReactNode }) {
+export function TabsTrigger({
+  value,
+  children,
+  className,
+}: {
+  value: string;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <TabsPrimitive.Trigger
       value={value}
@@ -313,6 +321,7 @@ export function TabsTrigger({ value, children }: { value: string; children: Reac
         "bg-paper-2 hover:bg-flag/50",
         "data-[state=active]:translate-y-0 data-[state=active]:bg-paper data-[state=active]:pb-3.5",
         "data-[state=inactive]:translate-y-1",
+        className,
       )}
     >
       {children}
@@ -332,7 +341,10 @@ export function TabsContent({
   return (
     <TabsPrimitive.Content
       value={value}
-      className={cx("outline-none", className)}
+      className={cx(
+        "focus-visible:outline-2 focus-visible:outline-dashed focus-visible:outline-ink focus-visible:outline-offset-[-4px]",
+        className,
+      )}
     >
       {children}
     </TabsPrimitive.Content>

@@ -1,5 +1,11 @@
 node_modules
 dist
+dist-lib
 .DS_Store
 *.local
 .impeccable/review
+
+# playwright: the configured reporters are `list` and (on CI) `html`, which writes
+# playwright-report; traces and failure artifacts land in test-results.
+playwright-report
+test-results

@@ -15,6 +15,7 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  DialogClose,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -91,7 +92,8 @@ function Spec({
         <DialogTrigger asChild>
           <button
             type="button"
-            className="label relative -mb-1 inline-flex w-fit items-center gap-1.5 text-[0.6rem] text-ink/65 transition-colors hover:text-accent"
+            aria-label={`Read the markup for ${name}`}
+            className="label relative -mb-1 inline-flex w-fit items-center gap-1.5 text-[0.6rem] text-ink/65 transition-colors hover:text-ink"
           >
             <Code size={13} />
             read the markup
@@ -481,11 +483,11 @@ function OverlayParts() {
               <Button size="sm" tone="solid" onClick={() => toast("Proof 14 signed", "Ada put it through the press.")}>
                 Sign it
               </Button>
-              <DialogTrigger asChild>
+              <DialogClose asChild>
                 <Button size="sm" tone="ghost">
                   Later
                 </Button>
-              </DialogTrigger>
+              </DialogClose>
             </div>
           </DialogContent>
         </Dialog>
@@ -642,8 +644,22 @@ function OverlayParts() {
           <ContextMenuTrigger asChild>
             <button
               type="button"
-              className="group/sw grid w-full max-w-52 grid-cols-4 gap-1 border-2 border-dashed border-ink/30 p-2 outline-none"
+              className="group/sw grid w-full max-w-52 grid-cols-4 gap-1 border-2 border-dashed border-ink/30 p-2"
               aria-label="Ink swatches — right-click for options"
+              onKeyDown={(event) => {
+                // Context menus have no keyboard trigger of their own; open this one
+                // at the swatch's centre, the way the platform menu key would.
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                const box = event.currentTarget.getBoundingClientRect();
+                event.currentTarget.dispatchEvent(
+                  new MouseEvent("contextmenu", {
+                    bubbles: true,
+                    clientX: box.left + box.width / 2,
+                    clientY: box.top + box.height / 2,
+                  }),
+                );
+              }}
             >
               {["var(--color-field)", "var(--color-accent)", "var(--color-flag)", "var(--color-paper)"].map(
                 (c) => (
@@ -746,7 +762,7 @@ export function Lab() {
         <div className="mb-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end">
           <div>
             <div className="mb-3 flex items-center gap-3 text-highlight">
-              <span className="label text-[0.6rem] text-on-field/75">Plate 02</span>
+              <span className="label text-[0.6rem] text-on-field/80">Plate 02</span>
               <span aria-hidden="true" className="h-0.5 w-10 bg-current" />
             </div>
             <h2 className="display text-[clamp(2.1rem,5.4vw,3.9rem)] text-on-field">
@@ -755,7 +771,7 @@ export function Lab() {
               <span className="text-highlight">no grey boxes.</span>
             </h2>
           </div>
-          <p className="max-w-[46ch] text-[1rem] leading-relaxed text-on-field/75 lg:pb-2">
+          <p className="max-w-[46ch] text-[1rem] leading-relaxed text-on-field/80 lg:pb-2">
             Every part below is live. Tab into it, press it, open it — the markup is one
             dialog away. Four tabs, twenty-one specimens, one paper stock.
           </p>
@@ -763,10 +779,10 @@ export function Lab() {
 
         <Tabs defaultValue="controls" className="w-full">
           <TabsList label="Parts by kind">
-            <TabsTrigger value="controls">Controls</TabsTrigger>
-            <TabsTrigger value="inputs">Inputs</TabsTrigger>
-            <TabsTrigger value="overlays">Overlays</TabsTrigger>
-            <TabsTrigger value="feedback">Feedback</TabsTrigger>
+            <TabsTrigger value="controls" className="ring-on-field">Controls</TabsTrigger>
+            <TabsTrigger value="inputs" className="ring-on-field">Inputs</TabsTrigger>
+            <TabsTrigger value="overlays" className="ring-on-field">Overlays</TabsTrigger>
+            <TabsTrigger value="feedback" className="ring-on-field">Feedback</TabsTrigger>
           </TabsList>
 
           <div className="relative border-2 border-ink bg-ink p-0">

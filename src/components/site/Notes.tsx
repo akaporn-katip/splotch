@@ -17,7 +17,7 @@ const NOTES = [
   },
   {
     title: "What it isn't",
-    body: "Not a package, not published, not a promises page. There is no install command, nothing is for sale, and the press operator is a drawing.",
+    body: "Not on npm, not a promises page. Install it from this folder with a file: specifier, or copy src/ into your app; nothing is for sale, and the press operator is a drawing.",
   },
 ];
 

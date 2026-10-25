@@ -21,7 +21,7 @@ export function Inks() {
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end">
           <div>
             <div className="mb-3 flex items-center gap-3 text-highlight">
-              <span className="label text-[0.6rem] text-on-field/75">Plate 04 · Inks</span>
+              <span className="label text-[0.6rem] text-on-field/80">Plate 04 · Inks</span>
               <span aria-hidden="true" className="h-0.5 w-10 bg-current" />
             </div>
             <h2 className="display text-[clamp(2.1rem,5.4vw,3.9rem)] text-on-field">
@@ -30,7 +30,7 @@ export function Inks() {
               <span className="text-highlight">Four taps and a reprint.</span>
             </h2>
           </div>
-          <p className="max-w-[46ch] text-[1rem] leading-relaxed text-on-field/75 lg:pb-2">
+          <p className="max-w-[46ch] text-[1rem] leading-relaxed text-on-field/80 lg:pb-2">
             Every coloured thing on this page reads from four variables. Change the inks
             here and the whole sheet reprints under you — nothing is hard-coded, and every
             pairing keeps its contrast.
@@ -53,6 +53,8 @@ export function Inks() {
                     key={i.id}
                     value={i.id}
                     data-active={active}
+                    aria-labelledby={`ink-name-${i.id}`}
+                    aria-describedby={`ink-note-${i.id}`}
                     style={
                       active
                         ? {
@@ -63,6 +65,7 @@ export function Inks() {
                     }
                     className={cx(
                       "group relative border-2 border-ink bg-paper p-4 text-left transition-[transform,box-shadow] duration-200",
+                      "ring-on-field",
                       "[border-radius:10px_3px_12px_4px]",
                       "data-[state=checked]:-translate-y-0.5",
                       "hover:-translate-y-0.5",
@@ -70,8 +73,13 @@ export function Inks() {
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <p className="label text-[0.68rem] text-ink">{i.name}</p>
-                        <p className="mt-1 max-w-44 text-[0.8125rem] leading-snug text-ink/60">
+                        <p id={`ink-name-${i.id}`} className="label text-[0.68rem] text-ink">
+                          {i.name}
+                        </p>
+                        <p
+                          id={`ink-note-${i.id}`}
+                          className="mt-1 max-w-44 text-[0.8125rem] leading-snug text-ink/60"
+                        >
                           {i.note}
                         </p>
                       </div>
@@ -86,21 +94,24 @@ export function Inks() {
                         <Check size={12} />
                       </span>
                     </div>
-                    <div className="mt-3 flex gap-1">
-                      {[i.field, i.accent, i.flag, i.paper].map((c) => (
+                    <div className="mt-3 flex items-center gap-1">
+                      {[i.field, i.accent, i.flag, i.paper, i.error].map((c) => (
                         <span
                           key={c}
                           className="h-6 w-6 border-2 border-ink/70"
                           style={{ background: c }}
                         />
                       ))}
+                      <span aria-hidden="true" className="label ml-1 shrink-0 text-[0.52rem] text-ink/65">
+                        error
+                      </span>
                     </div>
                   </RadioGroupPrimitive.Item>
                 );
               })}
             </RadioGroupPrimitive.Root>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t-2 border-on-field/20 pt-3 text-on-field/70">
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t-2 border-on-field/20 pt-3 text-on-field/85">
               <span className="label text-[0.58rem]">Now printing</span>
               <span className="label text-[0.6rem] text-on-field">
                 {current.name} · {current.field} · {current.accent}

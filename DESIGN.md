@@ -26,6 +26,7 @@ default so the kit still works if the attribute is missing.
 | ground, deep    | `--color-field-deep` | `#0a3f3b` | `#c9901c` | `#331530` | `#d6c9ad` |
 | spot ink        | `--color-accent`     | `#f0553b` | `#124a42` | `#f2b134` | `#bf3a21` |
 | second ink      | `--color-flag`       | `#efb93b` | `#f4ede0` | `#e6c3d8` | `#1d4b63` |
+| error ink       | `--color-error`      | `#a8331c` | `#9e4213` | `#9b2b4a` | `#8a2230` |
 | stock           | `--color-paper`      | `#f3ecdc` | `#fdf6e6` | `#f6ecd9` | `#fbf7ee` |
 | stock, shaded   | `--color-paper-2`    | `#e6dcc6` | `#f0e3c8` | `#e8dac0` | `#efe7d6` |
 | text on ground  | `--color-on-field`   | paper     | ink       | paper     | ink       |
@@ -38,11 +39,28 @@ Rules:
 - `--color-flag` is a **surface** ink (header bands, selected states). When it
   becomes text on the field, use `--color-highlight` instead — the two diverge in
   the mustard and newsprint sets precisely so the heading keeps its contrast.
-- Destructive ink is `--color-error` (`#a8331c`), constant across sets, because it
-  must stay readable on every stock.
-- Ink is never grey. Secondary text is the ink colour at reduced opacity over paper
-  (`text-ink/70` and up), or the field colour at reduced opacity over the ground.
-- Every pairing is audited at 4.5:1 body / 3:1 large text across all four sets.
+- Destructive ink is `--color-error`, and it is an ink of the set, not a utility
+  red: each set carries its own drawn from that palette (brick, sienna, wine,
+  oxblood), never grey and never pure black. It lands on stock — error messages,
+  and anything printed in it reversed — so it holds ≥4.5:1 against both
+  `--color-paper` and `--color-paper-2` in every set: legible as text on the
+  sheet, and a legible sheet for stock-coloured text on top of it. It also stays
+  clearly apart from that set's `--color-accent`, so an error never reads as a
+  highlight: a CIEDE2000 distance of at least 10 in every set, measured 16.7 in
+  newsprint (the closest pair), 18.4 workshop, 42.5 mustard, 55.8 plum. The
+  `@theme` value is the workshop fallback for a sheet with no `data-ink`.
+- Ink is never grey. Secondary text is the ink colour at reduced opacity over the
+  stock, or the ground's text ink at reduced opacity over the ground. The lightest
+  the sheet prints is `text-ink/60` on the sheet and `text-on-field/80` on the
+  ground; nothing under `/65` is printed on shaded stock.
+- Every pairing the sheet prints is audited at 4.5:1 body / 3:1 large text across
+  all four sets and the `@theme` fallback: the base pairings, every
+  reduced-opacity `text-ink/NN` and `text-on-field/NN` the components use (scanned
+  from the source, so a new alpha cannot skip the audit), `.ink-accent`,
+  `.field::placeholder`, and the error/spot separation. `npm run audit:contrast`
+  exits non-zero on any gating failure, on any drift between `src/lib/inks.ts` and
+  the `data-ink` blocks, and on a label at `text-ink/60` or lighter placed on
+  shaded stock.
 
 ## Type
 
@@ -88,7 +106,7 @@ Depth is always the plate; state is always register.
 | rest     | plate 5px out of register                                              |
 | hover    | plate moves toward register (≈60%) and the part lifts 1px              |
 | press    | plate overshoots *past* register; the part translates 1px down         |
-| focus    | 2px dashed ink crop mark at 4px offset — the same mark everywhere      |
+| focus    | 2px dashed crop mark at 4px offset — ink on stock (`--color-ring`), the ground's text ink on the ground (`.ring-on-field`). Two exceptions: tab panels draw it inset (`-4px`) because they sit inside a framed sheet, and menu/select items draw none — the highlight band is their state |
 | disabled | halftone face, no plate, ink text at 68%                               |
 | error    | spot-ink key line + halftone tint + a message that names the recovery  |
 | empty    | dashed key line, drawn mark, one action                                |
@@ -130,7 +148,9 @@ tabular.
 
 ## Known gaps
 
-- Not a published package; no install path, no tests, no CI.
-- `--color-error` is not part of the four-set ink room.
+- Not published to npm; installed from a local path with a `file:` specifier, or
+  by copying `src/`. The library build lands in `dist-lib/`; the tests are
+  Playwright specs run by `npm test`; CI runs the build, the contrast audit and
+  the tests.
 - The 1930s "boiling line" is approximated by static displacement-free geometry and
   a tremble on the character only; there is no per-frame line boil.

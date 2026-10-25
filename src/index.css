@@ -5,6 +5,7 @@
   --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
 
   --color-ink: #14110d;
+  --color-ring: var(--color-ink);
   --color-paper: #f3ecdc;
   --color-paper-2: #e6dcc6;
   --color-field: #0f5a54;
@@ -31,13 +32,13 @@ html[data-ink="workshop"] {
   --color-field-deep: #0a3f3b;
   --color-on-field: #f3ecdc;
   --color-highlight: #efb93b;
-  --color-on-field: #f3ecdc;
   --color-accent: #f0553b;
   --color-on-accent: #14110d;
   --color-flag: #efb93b;
   --color-on-flag: #14110d;
   --color-paper: #f3ecdc;
   --color-paper-2: #e6dcc6;
+  --color-error: #a8331c;
 }
 
 html[data-ink="mustard"] {
@@ -51,6 +52,7 @@ html[data-ink="mustard"] {
   --color-on-flag: #14110d;
   --color-paper: #fdf6e6;
   --color-paper-2: #f0e3c8;
+  --color-error: #9e4213;
 }
 
 html[data-ink="plum"] {
@@ -64,6 +66,7 @@ html[data-ink="plum"] {
   --color-on-flag: #241110;
   --color-paper: #f6ecd9;
   --color-paper-2: #e8dac0;
+  --color-error: #9b2b4a;
 }
 
 html[data-ink="newsprint"] {
@@ -77,6 +80,7 @@ html[data-ink="newsprint"] {
   --color-on-flag: #fbf7ee;
   --color-paper: #fbf7ee;
   --color-paper-2: #efe7d6;
+  --color-error: #8a2230;
 }
 
 :root {
@@ -145,7 +149,7 @@ html[data-ink="newsprint"] {
 
   :focus-visible {
     outline: 2px dashed currentColor;
-    outline-offset: 3px;
+    outline-offset: 4px;
   }
 
   input,
@@ -250,9 +254,10 @@ html[data-ink="newsprint"] {
     letter-spacing: -0.02em;
   }
 
-  /* Accent ink that still passes contrast when it becomes text on paper. */
+  /* Spot ink darkened toward the key line so it still reads as text on stock: half
+     and half, measured at >=4.5:1 on paper and paper-2 in all four sets. */
   .ink-accent {
-    color: color-mix(in oklab, var(--color-accent) 74%, var(--color-ink));
+    color: color-mix(in oklab, var(--color-accent) 50%, var(--color-ink));
   }
   .text-error {
     color: var(--color-error);
@@ -385,7 +390,7 @@ html[data-ink="newsprint"] {
   /* Focus: the crop marks close in. */
   .btn:focus-visible,
   .skin:focus-visible {
-    outline: 2px dashed var(--color-ink);
+    outline: 2px dashed var(--color-ring);
     outline-offset: 4px;
   }
 
@@ -408,9 +413,15 @@ html[data-ink="newsprint"] {
     background: color-mix(in oklab, var(--color-paper) 94%, var(--color-flag));
   }
   .field:focus-visible {
-    outline: 2px dashed var(--color-accent);
-    outline-offset: 3px;
+    outline: 2px dashed var(--color-ring);
+    outline-offset: 4px;
   }
+
+  /* The same crop mark, flipped to the ground's text ink where it sits on a field. */
+  .ring-on-field:focus-visible {
+    outline-color: var(--color-on-field);
+  }
+
   .field[aria-invalid="true"] {
     border-color: var(--color-accent);
     background-image: radial-gradient(

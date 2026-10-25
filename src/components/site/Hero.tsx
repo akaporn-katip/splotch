@@ -168,7 +168,7 @@ export function Hero() {
                     </DialogTrigger>
                     <DialogContent
                       title="Take the kit"
-                      description="Splotch is a demo surface, not a published package. Nothing here is for sale and no install command exists yet — the component source is the deliverable."
+                      description="Splotch is not on npm and never will be. Install it from this folder with a file: specifier, or copy src/ into your app — nothing is for sale, and the source is the deliverable."
                       kicker="Imprint"
                     >
                       <ol className="grid gap-3 text-[0.9375rem] leading-snug text-ink/85">

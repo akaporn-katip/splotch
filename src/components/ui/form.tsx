@@ -14,15 +14,18 @@ import { Check, ChevronDown } from "./icons";
 export function Label({
   children,
   htmlFor,
+  id,
   className,
 }: {
   children: ReactNode;
   htmlFor?: string;
+  id?: string;
   className?: string;
 }) {
   return (
     <label
       htmlFor={htmlFor}
+      id={id}
       className={cx("label block text-[0.7rem] text-ink", className)}
     >
       {children}
@@ -78,24 +81,28 @@ export function Input({ label, hint, error, className, id, ...rest }: InputProps
   );
 }
 
-export function Textarea({
-  label,
-  hint,
-  className,
-  id,
-  ...rest
-}: ComponentPropsWithoutRef<"textarea"> & { label?: string; hint?: string }) {
+export type TextareaProps = ComponentPropsWithoutRef<"textarea"> & {
+  label?: string;
+  hint?: string;
+  error?: string;
+};
+
+export function Textarea({ label, hint, error, className, id, ...rest }: TextareaProps) {
   const auto = useId();
   const fieldId = id ?? auto;
+  const hintId = hint ? `${fieldId}-hint` : undefined;
+  const errorId = error ? `${fieldId}-error` : undefined;
   return (
     <div className="w-full">
       {label && <Label htmlFor={fieldId}>{label}</Label>}
       <textarea
         id={fieldId}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={cx(hintId, errorId) || undefined}
         className={cx("field mt-1.5 min-h-24 resize-y", className)}
         {...rest}
       />
-      {hint && <Help id={`${fieldId}-hint`}>{hint}</Help>}
+      {error ? <ErrorText id={errorId}>{error}</ErrorText> : hint ? <Help id={hintId}>{hint}</Help> : null}
     </div>
   );
 }
@@ -174,10 +181,12 @@ export function Checkbox({
 }) {
   const auto = useId();
   const boxId = id ?? auto;
+  const labelId = `${boxId}-label`;
   return (
     <div className="flex items-start gap-2.5">
       <CheckboxPrimitive.Root
         id={boxId}
+        aria-labelledby={labelId}
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
@@ -194,7 +203,11 @@ export function Checkbox({
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
       <div className="leading-tight">
-        <label htmlFor={boxId} className="cursor-pointer select-none text-[0.9375rem] font-medium">
+        <label
+          id={labelId}
+          htmlFor={boxId}
+          className="cursor-pointer select-none text-[0.9375rem] font-medium"
+        >
           {label}
         </label>
         {hint && <p className="mt-1 text-[0.8125rem] text-ink/70">{hint}</p>}
@@ -218,6 +231,7 @@ export function RadioGroup({
   onValueChange?: (v: string) => void;
   className?: string;
 }) {
+  const groupId = useId();
   return (
     <RadioGroupPrimitive.Root
       aria-label={label}
@@ -225,29 +239,35 @@ export function RadioGroup({
       onValueChange={onValueChange}
       className={cx("grid gap-3", className)}
     >
-      {options.map((o) => (
-        <div key={o.value} className="flex items-start gap-2.5">
-          <RadioGroupPrimitive.Item
-            id={`radio-${o.value}`}
-            value={o.value}
-            className={cx(
-              "mt-0.5 grid h-[22px] w-[22px] shrink-0 place-items-center border-2 border-ink bg-paper [border-radius:50%]",
-              "data-[state=checked]:bg-accent",
-            )}
-          >
-            <RadioGroupPrimitive.Indicator className="block h-2.5 w-2.5 bg-ink [border-radius:50%]" />
-          </RadioGroupPrimitive.Item>
-          <div className="leading-tight">
-            <label
-              htmlFor={`radio-${o.value}`}
-              className="cursor-pointer select-none text-[0.9375rem] font-medium"
+      {options.map((o) => {
+        const itemId = `${groupId}-${o.value}`;
+        const labelId = `${itemId}-label`;
+        return (
+          <div key={o.value} className="flex items-start gap-2.5">
+            <RadioGroupPrimitive.Item
+              id={itemId}
+              aria-labelledby={labelId}
+              value={o.value}
+              className={cx(
+                "mt-0.5 grid h-[22px] w-[22px] shrink-0 place-items-center border-2 border-ink bg-paper [border-radius:50%]",
+                "data-[state=checked]:bg-accent",
+              )}
             >
-              {o.label}
-            </label>
-            {o.hint && <p className="mt-1 text-[0.8125rem] text-ink/70">{o.hint}</p>}
+              <RadioGroupPrimitive.Indicator className="block h-2.5 w-2.5 bg-ink [border-radius:50%]" />
+            </RadioGroupPrimitive.Item>
+            <div className="leading-tight">
+              <label
+                id={labelId}
+                htmlFor={itemId}
+                className="cursor-pointer select-none text-[0.9375rem] font-medium"
+              >
+                {o.label}
+              </label>
+              {o.hint && <p className="mt-1 text-[0.8125rem] text-ink/70">{o.hint}</p>}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </RadioGroupPrimitive.Root>
   );
 }
@@ -274,14 +294,16 @@ export function Slider({
   disabled?: boolean;
 }) {
   const id = useId();
+  const labelId = `${id}-label`;
+  const valueId = `${id}-value`;
   return (
     <div className="w-full">
       <div className="mb-2 flex items-baseline justify-between gap-3">
-        <label htmlFor={id} className="label text-[0.7rem] text-ink">
+        <span id={labelId} className="label text-[0.7rem] text-ink">
           {label}
-        </label>
+        </span>
         <output
-          htmlFor={id}
+          id={valueId}
           className="display text-lg leading-none tabular-nums text-ink"
         >
           {value[0]}
@@ -303,7 +325,8 @@ export function Slider({
           <SliderPrimitive.Range className="absolute inset-y-0 bg-accent" />
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb
-          aria-label={label}
+          aria-labelledby={labelId}
+          aria-describedby={valueId}
           className={cx(
             "block h-5 w-5 border-2 border-ink bg-paper",
             "shadow-[1px_1px_0_0_var(--color-ink)]",
@@ -340,12 +363,18 @@ export function Select({
   disabled?: boolean;
 }) {
   const id = useId();
+  const labelId = label ? `${id}-label` : undefined;
   return (
     <div className="w-full">
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && (
+        <Label id={labelId} htmlFor={id}>
+          {label}
+        </Label>
+      )}
       <SelectPrimitive.Root value={value} onValueChange={onValueChange} disabled={disabled}>
         <SelectPrimitive.Trigger
           id={id}
+          aria-labelledby={labelId}
           className="field mt-1.5 flex items-center justify-between gap-3 text-left data-[placeholder]:text-ink/65"
         >
           <SelectPrimitive.Value placeholder={placeholder} />

@@ -6,6 +6,7 @@ export type Ink = {
   accent: string;
   flag: string;
   paper: string;
+  error: string;
 };
 
 export const INKS: Ink[] = [
@@ -17,6 +18,7 @@ export const INKS: Ink[] = [
     accent: "#f0553b",
     flag: "#efb93b",
     paper: "#f3ecdc",
+    error: "#a8331c",
   },
   {
     id: "mustard",
@@ -26,6 +28,7 @@ export const INKS: Ink[] = [
     accent: "#124a42",
     flag: "#f4ede0",
     paper: "#fdf6e6",
+    error: "#9e4213",
   },
   {
     id: "plum",
@@ -35,14 +38,16 @@ export const INKS: Ink[] = [
     accent: "#f2b134",
     flag: "#e6c3d8",
     paper: "#f6ecd9",
+    error: "#9b2b4a",
   },
   {
     id: "newsprint",
     name: "Newsprint",
     note: "Bone field, brick spot, midnight flag.",
     field: "#e9dfc8",
-    accent: "#d0452c",
+    accent: "#bf3a21",
     flag: "#1d4b63",
     paper: "#fbf7ee",
+    error: "#8a2230",
   },
 ];
