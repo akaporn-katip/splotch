@@ -183,3 +183,10 @@ export const ChevronRight = (p: IconProps) => (
     <path d="m9.2 5.4 6.4 6.6-6.4 6.6" />
   </Icon>
 );
+
+export const Send = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3.6 11.4 20.2 4.1l-5.9 16.2-3.1-7.1-7.6-1.8Z" />
+    <path d="m11.2 13.2 4.3-4.4" />
+  </Icon>
+);

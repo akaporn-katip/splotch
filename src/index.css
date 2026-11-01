@@ -476,6 +476,17 @@ html[data-ink="newsprint"] {
     clip-path: polygon(100% 0, 100% 100%, 0 100%);
   }
 
+  /* The reader's own balloon: printed in the spot ink, tail cut on the right. */
+  .balloon-own {
+    background: var(--color-accent);
+    border-radius: 4px 16px 6px 18px / 18px 6px 16px 4px;
+  }
+  .balloon-own::after {
+    left: auto;
+    right: 18px;
+    background: var(--color-accent);
+  }
+
   /* Cut-paper corner: four different radii, never a pill by default. */
   .cut {
     border-radius: var(--radius-cut);

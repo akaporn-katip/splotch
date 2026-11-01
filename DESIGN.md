@@ -81,7 +81,9 @@ Rules:
 - **Controls:** 2px ink key line, 44px minimum height, cut radius, uppercase 0.1em
   tracked label.
 - **Panels:** 2px ink key line, cut radius, paper face.
-- **Balloons and captions:** asymmetric cut radius with a clipped tail.
+- **Balloons and captions:** asymmetric cut radius with a clipped tail. The
+  reader's own balloon (`.balloon-own`) mirrors the radius and the tail and is
+  printed in the spot ink.
 - **Grid:** 2px gutters that read as comic-panel rules; sections separate with a
   2px ink rule rather than a shadow.
 
@@ -106,7 +108,7 @@ Depth is always the plate; state is always register.
 | rest     | plate 5px out of register                                              |
 | hover    | plate moves toward register (≈60%) and the part lifts 1px              |
 | press    | plate overshoots *past* register; the part translates 1px down         |
-| focus    | 2px dashed crop mark at 4px offset — ink on stock (`--color-ring`), the ground's text ink on the ground (`.ring-on-field`). Two exceptions: tab panels draw it inset (`-4px`) because they sit inside a framed sheet, and menu/select items draw none — the highlight band is their state |
+| focus    | 2px dashed crop mark at 4px offset — ink on stock (`--color-ring`), the ground's text ink on the ground (`.ring-on-field`). Two exceptions: tab panels and the chat thread draw it inset (`-4px`) because they sit inside a framed sheet, and menu/select items draw none — the highlight band is their state |
 | disabled | halftone face, no plate, ink text at 68%                               |
 | error    | error-ink key line + halftone tint + a message that names the recovery |
 | empty    | dashed key line, drawn mark, one action                                |
@@ -119,9 +121,26 @@ Shift for the year) and one roving tab stop. Days outside the month are printed
 at reduced ink, today carries a drawn ring, the chosen day is printed in the spot
 ink, and days outside `min`/`max` carry a ruled-out hatch instead of a grey ghost.
 
-Inventory (22): Button (4 tones, 2 sizes), IconButton, Badge (4 tones), Avatar,
+The chat is a strip of speech balloons, and like the date picker the behaviour
+is ours. It is headless where it matters: messages come in as props (or as
+`ChatMessage` children of a `ChatThread`), a sent message goes out through
+`onSend`, and nothing in it talks to a network. The other sender's balloon is
+stock with its tail cut on the left; the reader's own is printed in the spot ink
+with the tail on the right — a sender is told apart by ink and side, never by a
+grey. Name and time are printed above the balloon on the stock, not inside the
+spot, so they stay ink on paper. The thread is a `role="log"` live region on
+shaded stock, focusable so it scrolls by keyboard (its crop mark is drawn inset,
+like a tab panel's). It stays pinned to the newest balloon while the reader is at
+the bottom, lets go when they scroll back, and prints a "jump to newest" plate
+when something arrives below them; a message they send themselves always pins it.
+The jump is instant, never a smooth scroll — nothing animates on scroll. The
+composer is a real labelled field that grows with its text: Enter sends,
+Shift+Enter is a new line, Enter during IME composition belongs to the input
+method, and the 44px send button is halftoned while the draft is blank.
+
+Inventory (23): Button (4 tones, 2 sizes), IconButton, Badge (4 tones), Avatar,
 Progress, ToggleGroup, Switch, Slider (diamond thumb), Checkbox, RadioGroup,
-Select, Input, Textarea, Empty state, DatePicker, Dialog, DropdownMenu,
+Select, Input, Textarea, Empty state, DatePicker, Chat, Dialog, DropdownMenu,
 ContextMenu, Popover, Tooltip, Toast, Tabs, Accordion.
 
 ## Motion
