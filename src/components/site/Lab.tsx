@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { Button, IconButton, Badge, Avatar, Progress } from "../ui/primitives";
 import { DatePicker } from "../ui/date-picker";
+import { Chat } from "../ui/chat";
+import type { ChatEntry } from "../ui/chat";
 import {
   Checkbox,
   Input,
@@ -72,7 +74,7 @@ function Spec({
   wide?: boolean;
 }) {
   return (
-    <article className={cx("group relative flex flex-col bg-paper p-4 sm:p-5", wide && "sm:col-span-2")}>
+    <article className={cx("group relative flex flex-col bg-paper p-4 sm:p-5", wide && "sm:col-span-2 xl:col-span-3")}>
       <div
         aria-hidden="true"
         className="dots pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -709,6 +711,61 @@ function OverlayParts() {
   );
 }
 
+/** The press room's side of the conversation: canned, local, never a network. */
+const REPLIES = [
+  "Noted. The plate goes back on the drum.",
+  "Pulling a proof now — give it a minute to dry.",
+  "Spot ink is mixed. Teal, as asked.",
+  "Registration is off by a hair. That's the look.",
+];
+
+const RAY = { name: "Ray Halftone", avatar: <Avatar name="Ray Halftone" size={36} /> };
+
+const SEED: ChatEntry[] = [
+  { id: "s1", ...RAY, time: "09:12", text: "Morning. Plate No. 9 is on the drum." },
+  { id: "s2", own: true, time: "09:13", text: "Pull one proof first — the teal looked heavy yesterday." },
+  { id: "s3", ...RAY, time: "09:15", text: "Proof's drying. The key line is crisp, the spot sits 5px out." },
+  { id: "s4", own: true, time: "09:16", text: "Keep it out. The misregister is the point." },
+  { id: "s5", ...RAY, time: "09:18", text: "Then we print. Say the word." },
+];
+
+function ChatSpecimen() {
+  const [messages, setMessages] = useState<ChatEntry[]>(SEED);
+  const replies = useRef(0);
+  const timer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  function send(text: string) {
+    const now = new Date();
+    setMessages((list) => [...list, { id: `me-${now.getTime()}`, own: true, time: now, text }]);
+
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => {
+      const text = REPLIES[replies.current % REPLIES.length];
+      replies.current += 1;
+      setMessages((list) => [
+        ...list,
+        {
+          id: `ray-${Date.now()}`,
+          ...RAY,
+          time: new Date(),
+          text,
+        },
+      ]);
+    }, 900);
+  }
+
+  return (
+    <Chat
+      label="Press room"
+      messages={messages}
+      onSend={send}
+      className="h-[26rem] max-w-3xl"
+    />
+  );
+}
+
 function FeedbackParts() {
   const { toast } = useShop();
 
@@ -771,6 +828,30 @@ function FeedbackParts() {
         <Badge tone="ink">v0.1</Badge>
         <Badge tone="paper">Paper</Badge>
       </Spec>
+
+      <Spec
+        n={23}
+        name="Chat"
+        note="Balloons in a live log. It follows the newest unless you scroll back."
+        wide
+        code={`
+<Chat
+  label="Press room"
+  messages={messages}
+  onSend={(text) => setMessages([...messages, { id, own: true, text }])}
+/>
+
+// or compose it yourself
+<ChatThread label="Press room">
+  <ChatMessage name="Ray Halftone" time="09:12" avatar={<Avatar name="Ray Halftone" size={36} />}>
+    Plate No. 9 is on the drum.
+  </ChatMessage>
+  <ChatMessage own time="09:13">Pull one proof first.</ChatMessage>
+</ChatThread>
+<ChatComposer onSend={send} />`}
+      >
+        <ChatSpecimen />
+      </Spec>
     </SpecGrid>
   );
 }
@@ -788,14 +869,14 @@ export function Lab() {
               <span aria-hidden="true" className="h-0.5 w-10 bg-current" />
             </div>
             <h2 className="display text-[clamp(2.1rem,5.4vw,3.9rem)] text-on-field">
-              Twenty-two parts,
+              Twenty-three parts,
               <br />
               <span className="text-highlight">no grey boxes.</span>
             </h2>
           </div>
           <p className="max-w-[46ch] text-[1rem] leading-relaxed text-on-field/80 lg:pb-2">
             Every part below is live. Tab into it, press it, open it — the markup is one
-            dialog away. Four tabs, twenty-two specimens, one paper stock.
+            dialog away. Four tabs, twenty-three specimens, one paper stock.
           </p>
         </div>
 
